@@ -1,11 +1,11 @@
 # Provider 설정
 provider "aws" {
-    region = "us-east-2"
+  region = "us-east-2"
 }
 
 # VPC 생성
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
 
   tags = {
@@ -24,8 +24,8 @@ resource "aws_internet_gateway" "gw" {
 
 # Public SN 생성
 resource "aws_subnet" "main" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
   tags = {
     Name = "mySubnet"
@@ -88,17 +88,17 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 
 # EC2 생성
 resource "aws_instance" "myEC2" {
-  ami = "ami-0d7ae6a161c5c4239"
-  instance_type = "t2.micro"
+  ami                    = "ami-0d7ae6a161c5c4239"
+  instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.mySG-SSH-HTTP.id]
-  subnet_id     = aws_subnet.main.id
-  user_data = <<-EOF
+  subnet_id              = aws_subnet.main.id
+  user_data              = <<-EOF
     #!/bin/bash
     yum -y install httpd
     echo 'MyWEB' > /var/www/html/index.html
     systemctl enable --now httpd
     EOF
-  
+
   user_data_replace_on_change = true
 
   tags = {
