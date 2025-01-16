@@ -10,8 +10,8 @@ resource "aws_db_instance" "myDBInstance" {
   instance_class       = "db.t2.micro"
 
   db_name              = "mydb"
-  username             = "foo"       # 변수로 사용
-  password             = "foobarbaz" # 변수로 사용
+  username             = var.dbuser       # 변수로 사용
+  password             = var.dbpassword   # 변수로 사용
 
   parameter_group_name = "default.mysql8.0"
   skip_final_snapshot  = true
