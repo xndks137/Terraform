@@ -19,7 +19,7 @@
 #### 기본 인프라 구성 ####
 # 1. VPC 설정
 resource "aws_vpc" "vpc" {
-  cidr_block = "10.123.0.0/16"
+  cidr_block           = "10.123.0.0/16"
   enable_dns_hostnames = true
   tags = {
     Name = "myVPC"
@@ -29,8 +29,8 @@ resource "aws_vpc" "vpc" {
 # 2. Public subnet 설정
 # * map_public_ip_on_launch = true
 resource "aws_subnet" "public_SN" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = "10.123.0.0/24"
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = "10.123.0.0/24"
   map_public_ip_on_launch = true
   tags = {
     Name = "myPubSN"
@@ -103,12 +103,12 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
 resource "aws_key_pair" "test_keypair" {
   key_name   = "mykeypair3"
   public_key = file("~/.ssh/id_ed25519.pub")
-} 
+}
 
 # 3. AMI Data Source 설정
 data "aws_ami" "ubuntu2404" {
-  most_recent      = true
-  owners           = ["099720109477"]
+  most_recent = true
+  owners      = ["099720109477"]
 
   filter {
     name   = "name"
@@ -126,20 +126,20 @@ resource "aws_instance" "devEC2" {
   ami           = data.aws_ami.ubuntu2404.id
   instance_type = "t2.micro"
 
-  key_name = aws_key_pair.test_keypair.key_name
-  subnet_id = aws_subnet.public_SN.id
+  key_name               = aws_key_pair.test_keypair.key_name
+  subnet_id              = aws_subnet.public_SN.id
   vpc_security_group_ids = [aws_security_group.public_SG.id]
 
   user_data_replace_on_change = true
-  user_data = file("userdata.tpl")
-  
+  user_data                   = file("userdata.tpl")
+
   provisioner "local-exec" {
-    command = templatefile("sshconfig.tpl",{
-      hostname = self.public_ip,
-      username = "ubuntu",
+    command = templatefile("sshconfig.tpl", {
+      hostname     = self.public_ip,
+      username     = "ubuntu",
       identifyfile = "~/.ssh/id_ed25519"
-      })
-    interpreter = ["bash","-c"]
+    })
+    interpreter = ["bash", "-c"]
   }
 
   tags = {

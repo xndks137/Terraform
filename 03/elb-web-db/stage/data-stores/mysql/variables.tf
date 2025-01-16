@@ -1,11 +1,11 @@
 variable "dbuser" {
-  type = string
+  type        = string
   description = "DB user"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "dbpassword" {
-  type = string
+  type        = string
   description = "DB password"
-  sensitive = true
+  sensitive   = true
 }
