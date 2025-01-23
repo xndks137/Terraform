@@ -1,17 +1,16 @@
-variable "region" {
-  description = "AWS region"
-  type        = string
-  default     = "ap-northeast-2"
-}
-
 variable "db_username" {
-  description = "Master username for the database"
-  type        = string
-  default     = "admin"
+  description = "Username of DB"
+  type = string
+  sensitive = true
 }
 
 variable "db_password" {
-  description = "Master password for the database"
+  description = "Password of DB"
+  type = string
+  sensitive = true
+}
+
+variable "key_name" {
+  description = "Name of Key already uploaded in AWS"
   type        = string
-  sensitive   = true
 }
